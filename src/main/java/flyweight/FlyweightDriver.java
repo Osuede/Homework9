@@ -4,18 +4,29 @@ import java.io.IOException;
 
 public class FlyweightDriver {
     public static void main(String[] args) throws IOException {
-        // TODO 1: create one CharacterPropertiesFactory and a Document that uses it
+        CharacterPropertiesFactory factory = new CharacterPropertiesFactory();
+        Document document = new Document(factory);
 
-        // TODO 2: add "HelloWorldCS5800" with at least 4 different property combinations, e.g.
-        //   document.addText("Hello", "Arial",   12, "Red");
-        //   document.addText("World", "Calibri", 14, "Blue");
-        //   document.addText("CS",    "Verdana", 16, "Black");
-        //   document.addText("5800",  "Arial",   16, "Blue");
+        document.addText("Hello", "Arial", 12, "Red");
+        document.addText("World", "Calibri", 14, "Blue");
+        document.addText("CS", "Verdana", 16, "Black");
+        document.addText("5800", "Arial", 16, "Blue");
+        System.out.println("Created: " + document.getText());
 
-        // TODO 3: save it to "HelloWorldCS5800.txt"
+        document.editCharacter(0, 'H', "Verdana", 16, "Black");
+        System.out.println("Edited the first H to Verdana, 16, Black");
 
-        // TODO 4: load the file into a new Document (same factory) and print it
+        document.save("HelloWorldCS5800.txt");
+        System.out.println("Saved to HelloWorldCS5800.txt");
 
-        // TODO 5: edit a character, and print how many properties objects the factory created
+        Document loaded = new Document(factory);
+        loaded.load("HelloWorldCS5800.txt");
+        System.out.println();
+        System.out.println("===== Loaded from HelloWorldCS5800.txt =====");
+        loaded.printDocument();
+
+        System.out.println();
+        System.out.println(loaded.getText().length() + " characters share "
+                + factory.getCount() + " properties objects");
     }
 }
