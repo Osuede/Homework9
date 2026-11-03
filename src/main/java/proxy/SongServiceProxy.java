@@ -4,11 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * PROXY — looks exactly like a SongService, but keeps a cache in memory.
- * The first time something is searched, the proxy asks the real server (slow)
- * and remembers the answer. The same search again comes from the cache (fast).
- */
 public class SongServiceProxy implements SongService {
     private final SongService server;
     private final Map<Integer, Song> idCache = new HashMap<>();
@@ -21,20 +16,25 @@ public class SongServiceProxy implements SongService {
 
     @Override
     public Song searchById(Integer songID) {
-        // TODO: if idCache already has songID, return the cached song.
-        //       Otherwise ask the server, store the answer in idCache, and return it.
-        return null;
+        if (!idCache.containsKey(songID)) {
+            idCache.put(songID, server.searchById(songID));
+        }
+        return idCache.get(songID);
     }
 
     @Override
     public List<Song> searchByTitle(String title) {
-        // TODO: same idea as searchById, using titleCache
-        return null;
+        if (!titleCache.containsKey(title)) {
+            titleCache.put(title, server.searchByTitle(title));
+        }
+        return titleCache.get(title);
     }
 
     @Override
     public List<Song> searchByAlbum(String album) {
-        // TODO: same idea as searchById, using albumCache
-        return null;
+        if (!albumCache.containsKey(album)) {
+            albumCache.put(album, server.searchByAlbum(album));
+        }
+        return albumCache.get(album);
     }
 }

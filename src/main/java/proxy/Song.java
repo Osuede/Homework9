@@ -1,6 +1,5 @@
 package proxy;
 
-/** Song metadata only. No audio — the assignment only cares about the metadata. */
 public class Song {
     private final int id;
     private final String title;
