@@ -1,14 +1,44 @@
 package proxy;
 
+import java.util.List;
+
 public class ProxyDriver {
     public static void main(String[] args) {
-        // TODO 1: create a SongServer and add 5-10 songs to it
+        SongServer server = new SongServer();
+        server.addSong(new Song(1, "Bohemian Rhapsody", "Queen", "A Night at the Opera", 354));
+        server.addSong(new Song(2, "Love of My Life", "Queen", "A Night at the Opera", 219));
+        server.addSong(new Song(3, "Hurt", "Johnny Cash", "American IV", 218));
+        server.addSong(new Song(4, "Hurt", "Nine Inch Nails", "The Downward Spiral", 373));
+        server.addSong(new Song(5, "Billie Jean", "Michael Jackson", "Thriller", 294));
+        server.addSong(new Song(6, "Thriller", "Michael Jackson", "Thriller", 357));
+        server.addSong(new Song(7, "Yesterday", "The Beatles", "Help!", 125));
 
-        // TODO 2: wrap the server in a SongServiceProxy, stored in a SongService variable
+        SongService service = new SongServiceProxy(server);
 
-        // TODO 3: search with searchById, searchByTitle and searchByAlbum, each one TWICE,
-        //         and print how long each search took (use System.currentTimeMillis()).
-        //         The first search should take about 1 second (server),
-        //         the repeat about 0 ms (cache).
+        System.out.println("===== searchById(5) =====");
+        for (int i = 1; i <= 2; i++) {
+            long start = System.currentTimeMillis();
+            Song song = service.searchById(5);
+            long time = System.currentTimeMillis() - start;
+            System.out.println("Search " + i + " took " + time + " ms: " + song);
+        }
+
+        System.out.println();
+        System.out.println("===== searchByTitle(\"Hurt\") =====");
+        for (int i = 1; i <= 2; i++) {
+            long start = System.currentTimeMillis();
+            List<Song> songs = service.searchByTitle("Hurt");
+            long time = System.currentTimeMillis() - start;
+            System.out.println("Search " + i + " took " + time + " ms: " + songs);
+        }
+
+        System.out.println();
+        System.out.println("===== searchByAlbum(\"Thriller\") =====");
+        for (int i = 1; i <= 2; i++) {
+            long start = System.currentTimeMillis();
+            List<Song> songs = service.searchByAlbum("Thriller");
+            long time = System.currentTimeMillis() - start;
+            System.out.println("Search " + i + " took " + time + " ms: " + songs);
+        }
     }
 }
